@@ -10,7 +10,18 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            "http://localhost:5173",  // Vite dev server
+            "http://localhost:3000",   // Alternative dev port
+            process.env.FRONTEND_URL || "https://your-frontend.vercel.app"  // Production frontend URL
+        ],
+        credentials: true
+    })
+);
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,7 +46,7 @@ app.use((err, req, res, next) => {
 const connectDB = async () => {
     try {
         let mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/foodsafe';
-        
+
         // Ensure database name is included in MongoDB URI
         if (mongoURI && (mongoURI.includes('mongodb+srv://') || mongoURI.includes('mongodb://'))) {
             // Remove trailing slash if present
@@ -48,7 +59,7 @@ const connectDB = async () => {
                 mongoURI = mongoURI + '/foodsafe';
             }
         }
-        
+
         await mongoose.connect(mongoURI);
         console.log('MongoDB connected successfully');
     } catch (error) {
