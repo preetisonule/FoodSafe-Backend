@@ -15,7 +15,7 @@ app.use(
         origin: [
             "http://localhost:5173",  // Vite dev server
             "http://localhost:3000",   // Alternative dev port
-            process.env.FRONTEND_URL || "https://your-frontend.vercel.app"  // Production frontend URL
+            process.env.FRONTEND_URL || "https://food-safe-frontend-v1.vercel.app"  // Production frontend URL (no trailing slash)
         ],
         credentials: true
     })
